@@ -54,11 +54,13 @@ async function decodeRecaptchaAsync(
 export async function getSolutions(
   captchas: types.CaptchaInfo[] = [],
   token: string = '',
+  proxy: string = '',
+  proxytype: string = '',
   opts: TwoCaptchaProviderOpts = {}
 ): Promise<types.GetSolutionsResult> {
   opts = { ...providerOptsDefaults, ...opts }
   const solutions = await Promise.all(
-    captchas.map(c => getSolution(c, token, opts))
+    captchas.map(c => getSolution(c, token, proxy, proxytype, opts))
   )
   return { solutions, error: solutions.find(s => !!s.error) }
 }
@@ -66,6 +68,8 @@ export async function getSolutions(
 async function getSolution(
   captcha: types.CaptchaInfo,
   token: string,
+  proxy: string,
+  proxytype: string,
   opts: TwoCaptchaProviderOpts
 ): Promise<types.CaptchaSolution> {
   const solution: types.CaptchaSolution = {
@@ -88,6 +92,10 @@ async function getSolution(
     }
     if (opts.useEnterpriseFlag && captcha.isEnterprise) {
       extraData['enterprise'] = 1
+    }
+    if (proxy.length > 0) {
+      extraData['proxy'] = proxy
+      extraData['proxytype'] = proxytype
     }
     const { err, result, invalid } = await decodeRecaptchaAsync(
       token,

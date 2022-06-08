@@ -222,6 +222,8 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
       this,
       captchas,
       provider.token,
+      provider.proxy,
+      provider.proxytype,
       provider.opts || {}
     )
     response.error =
