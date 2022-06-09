@@ -54,13 +54,12 @@ async function decodeRecaptchaAsync(
 export async function getSolutions(
   captchas: types.CaptchaInfo[] = [],
   token: string = '',
-  proxy: string = '',
-  proxytype: string = '',
+  extraData: any = {},
   opts: TwoCaptchaProviderOpts = {}
 ): Promise<types.GetSolutionsResult> {
   opts = { ...providerOptsDefaults, ...opts }
   const solutions = await Promise.all(
-    captchas.map(c => getSolution(c, token, proxy, proxytype, opts))
+    captchas.map(c => getSolution(c, token, extraData, opts))
   )
   return { solutions, error: solutions.find(s => !!s.error) }
 }
@@ -68,8 +67,7 @@ export async function getSolutions(
 async function getSolution(
   captcha: types.CaptchaInfo,
   token: string,
-  proxy: string,
-  proxytype: string,
+  extra_data: any,
   opts: TwoCaptchaProviderOpts
 ): Promise<types.CaptchaSolution> {
   const solution: types.CaptchaSolution = {
@@ -83,7 +81,7 @@ async function getSolution(
     solution.id = captcha.id
     solution.requestAt = new Date()
     debug('Requesting solution..', solution)
-    const extraData = {}
+    const extraData = extra_data
     if (captcha.s) {
       extraData['data-s'] = captcha.s // google site specific property
     }
@@ -93,10 +91,7 @@ async function getSolution(
     if (opts.useEnterpriseFlag && captcha.isEnterprise) {
       extraData['enterprise'] = 1
     }
-    if (proxy.length > 0) {
-      extraData['proxy'] = proxy
-      extraData['proxytype'] = proxytype
-    }
+    console.log(extraData)
     const { err, result, invalid } = await decodeRecaptchaAsync(
       token,
       captcha._vendor,

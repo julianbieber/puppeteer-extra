@@ -1,10 +1,11 @@
 {
+  "name": "puppeteer-extra",
   "private": true,
   "description": "Modular framework to teach Puppeteer new tricks.",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
-  "main": "packages/puppeteer-extra/index.js",
+  "main": "packages/puppeteer-extra/dist/index.cjs.js",
   "engines": {
     "node": ">=8"
   },
@@ -42,12 +43,6 @@
     "lerna-update-wizard": "^0.17.5",
     "prettier": "^1.19.1",
     "prettier-config-standard": "^1.0.1"
-  },
-  "optionalDependencies": {
-    "fsevents": "^2.1.2"
-  },
-  "resolutions": {
-    "**/fsevents": "^2.1.2"
   },
   "dependencies": {},
   "version": "0.0.0"

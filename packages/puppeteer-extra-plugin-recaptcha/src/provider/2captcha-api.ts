@@ -166,8 +166,9 @@ export const decodeReCaptcha = function(
     postData.sitekey = captcha
   }
 
+  console.log(postData)
   postData = querystring.stringify(postData)
-
+  console.log(postData)
   var request = http.request(httpRequestOptions, function(response) {
     var body = ''
 
